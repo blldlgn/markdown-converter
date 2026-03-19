@@ -1,6 +1,7 @@
 # URL → Markdown Converter
 
-URL'yi yapıştır, Markdown al. Ücretsiz. API yok. Sadece Claude.ai aboneliği yeterli.
+URL'yi yapıştır, prompt kopyala, Claude'a yapıştır, Markdown al.  
+Ücretsiz. API yok. Sadece Claude.ai aboneliği yeterli.
 
 ![Claude.ai](https://img.shields.io/badge/Claude.ai-Artifact-black?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
@@ -10,38 +11,28 @@ URL'yi yapıştır, Markdown al. Ücretsiz. API yok. Sadece Claude.ai aboneliği
 
 ## ▶️ Tek Tıkla Başlat
 
-Aşağıdaki butona tıklayın — Claude.ai açılır, araç otomatik yüklenir:
+[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/markdown-converter/refs/heads/main/MarkdownConverterv3.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20calistir.)
 
-[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/markdown-converter/refs/heads/main/MarkdownConverterV2.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
-
-Tıkladıktan sonra Claude mesaj kutusunda hazır gelir — sadece **Enter**'a basın.
+Butona tıklayın → Claude.ai açılır → **Enter**'a basın → Araç hazır.
 
 ---
 
-## Nasıl Çalışır?
+## Nasıl Kullanılır?
 
-`sendPrompt()` — Claude.ai'ın artifact'lere özel fonksiyonu. API key gerektirmez.
-
-```
-Siz URL girersiniz
-       ↓
-Artifact sendPrompt() ile Claude'a gönderir
-       ↓
-Claude sayfayı çekip Markdown'a çevirir
-       ↓
-Yanıt chat'te görünür
-```
+1. **URL girin** — Tek URL veya Manuel Liste modunda birden fazla URL
+2. **"Prompt Oluştur ve Kopyala"** butonuna basın — Prompt otomatik kopyalanır
+3. **Claude chat'e yapıştırın** — Claude sayfayı çekip Markdown'a çevirir
+4. **Çıktıyı alın** — Kopyalayın, indirin veya düzenleyin
 
 ---
 
 ## Özellikler
 
-- **Tek URL** — tek bir sayfa
-- **Manuel Liste** — birden fazla URL satır satır
-- **Sitemap modu** — `sitemap.xml` girin, URL'leri otomatik çeker, seçip toplu gönderin
-- **Otomatik gönderim** — `sendPrompt()` ile Claude'a direkt iletilir
-- **Kopyala / İndir .md** — çıktıyı kaydedin
-- **Düzenleme modu** — Markdown'ı inline düzenleyin
+- **Tek URL modu** — tek sayfa
+- **Manuel Liste modu** — birden fazla URL, satır satır
+- **Otomatik kopyalama** — butona basınca prompt hazır
+- **Markdown çıktı paneli** — token / karakter / satır istatistikleri
+- **Kopyala / İndir .md / Düzenle**
 - **Geçmiş** — son 20 dönüşüm tarayıcıda saklanır
 - **Tümünü İndir** — geçmişteki tüm sayfaları tek `.md` dosyasına
 
@@ -53,21 +44,7 @@ Yanıt chat'te görünür
 |---|---|
 | Claude.ai hesabı | ✅ Gerekli |
 | API Key | ❌ Gerekmez |
-| Backend / Sunucu | ❌ Gerekmez |
 | Kurulum | ❌ Gerekmez |
-
----
-
-## Sık Sorulan Sorular
-
-**Bu neden ücretsiz?**
-`sendPrompt()` Claude.ai'ın artifact API'si. Claude aboneliğinizin içinde, ek ücret yok.
-
-**GitHub Pages veya Netlify'da çalışır mı?**
-Hayır. `sendPrompt()` sadece Claude.ai artifact ortamında çalışır.
-
-**Claude ücretsiz planında çalışır mı?**
-Evet, ancak ücretsiz planda mesaj limiti var. Pro/Team planlarda limit daha yüksek.
 
 ---
 
