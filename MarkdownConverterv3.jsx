@@ -79,6 +79,9 @@ export default function MarkdownConverter() {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [copied, setCopied] = useState(false);
   const [mdCopied, setMdCopied] = useState(false);
+  const [pasteMode, setPasteMode] = useState(false);
+  const [pasteInput, setPasteInput] = useState('');
+  const [pasteUrl, setPasteUrl] = useState('');
 
   useEffect(() => {
     try {
@@ -96,7 +99,16 @@ export default function MarkdownConverter() {
 
   const buildPrompt = (urlList) => {
     if (urlList.length === 1) return `Please fetch the content at the following URL and convert it to clean, well-structured Markdown. Preserve headings, lists, code blocks. Return ONLY the Markdown.\n\nURL: ${urlList[0]}`;
-    return `Please fetch and convert each of these URLs to clean Markdown. For each URL, use the URL as a heading, then the content below. Separate each with ---.\n\nURLs:\n${urlList.map((u, i) => `${i + 1}. ${u}`).join('\n')}`;
+    return `Please fetch and convert each of these URLs to clean Markdown.
+
+IMPORTANT FORMAT RULES:
+- Start each page with exactly: <!-- URL: https://... -->
+- Then the markdown content
+- Separate each page with exactly: ---
+- Return ONLY the markdown, no explanations
+
+URLs:
+${urlList.map((u, i) => `${i + 1}. ${u}`).join('\n')}`;
   };
 
   const getUrlList = () => {
@@ -112,6 +124,65 @@ export default function MarkdownConverter() {
       setCopiedFn(true); setTimeout(() => setCopiedFn(false), 2000);
     } catch (_) {
       navigator.clipboard.writeText(text).then(() => { setCopiedFn(true); setTimeout(() => setCopiedFn(false), 2000); }).catch(() => {});
+    }
+  };
+
+  const handlePasteSubmit = () => {
+    if (!pasteInput.trim()) return;
+    const text = pasteInput.trim();
+
+    // Try to split by --- separator (multi-URL mode)
+    const parts = text.split(/\n---\n/).map(p => p.trim()).filter(Boolean);
+
+    if (parts.length > 1) {
+      // Multi-URL: parse each part
+      parts.forEach((part, i) => {
+        const urlMatch = part.match(/<!--\s*URL:\s*(https?:\/\/[^\s>]+)\s*-->/);
+        const url = urlMatch ? urlMatch[1] : (pasteUrl.trim() || `page-${i+1}`);
+        const mdContent = part.replace(/<!--.*?-->/gs, '').trim();
+        const title = url.replace(/^https?:\/\//, '').split('/')[0] || `page-${i+1}`;
+        saveToHistory(url, title, mdContent);
+      });
+      setMarkdown(parts[0].replace(/<!--.*?-->/gs, '').trim());
+      setCurrentTitle(`${parts.length} sayfa`);
+      setStatus({ type: 'ok', msg: `${parts.length} sayfa kaydedildi — ZIP Indir ile indirin.` });
+    } else {
+      // Single URL
+      const url = pasteUrl.trim() || (mode === 'single' ? singleUrl.trim() : 'manual');
+      const title = url.replace(/^https?:\/\//, '').split('/')[0] || 'page';
+      saveToHistory(url, title, text);
+      setMarkdown(text);
+      setCurrentTitle(title);
+      setStatus({ type: 'ok', msg: 'Markdown kaydedildi.' });
+    }
+
+    setPasteInput('');
+    setPasteUrl('');
+    setPasteMode(false);
+  };
+
+  const downloadZip = async () => {
+    const items = history.filter(i => i.markdown);
+    if (!items.length) return;
+    try {
+      const JSZip = (await import('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')).default;
+      const zip = new JSZip();
+      items.forEach((item, i) => {
+        const name = (item.title || `page-${i+1}`).replace(/[^a-z0-9]/gi, '-').toLowerCase();
+        zip.file(`${name}.md`, item.markdown);
+      });
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'markdown-export.zip';
+      a.click();
+    } catch (_) {
+      // fallback: combined .md
+      const combined = items.map(i => `# ${i.title}\n> ${i.url}\n\n${i.markdown}`).join('\n\n---\n\n');
+      const a = document.createElement('a');
+      a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(combined);
+      a.download = 'markdown-export.md';
+      a.click();
     }
   };
 
@@ -174,7 +245,37 @@ export default function MarkdownConverter() {
               <button className="mc-btn mc-btn-primary" onClick={handleConvert}>
                 Prompt Olustur ve Kopyala
               </button>
+              <button className="mc-btn mc-btn-outline" onClick={() => { setPasteMode(p => !p); setPasteInput(''); setPasteUrl(''); }}>
+                {pasteMode ? 'Iptal' : 'Markdown Yapistir'}
+              </button>
             </div>
+
+            {pasteMode && (
+              <div style={{ marginTop: '1rem', background: 'var(--paper)', border: '1.5px solid var(--rule)', borderRadius: '2px', padding: '1.25rem' }}>
+                <input
+                  className="mc-input"
+                  style={{ marginBottom: '0.75rem' }}
+                  placeholder="URL (opsiyonel — hangi sayfaya ait?)"
+                  value={pasteUrl}
+                  onChange={e => setPasteUrl(e.target.value)}
+                />
+                <textarea
+                  className="mc-textarea"
+                  style={{ height: '160px', marginBottom: '0.75rem' }}
+                  placeholder="Claude'dan gelen markdown ciktisini buraya yapistirin..."
+                  value={pasteInput}
+                  onChange={e => setPasteInput(e.target.value)}
+                  autoFocus
+                />
+                <button
+                  className="mc-btn mc-btn-primary"
+                  onClick={handlePasteSubmit}
+                  disabled={!pasteInput.trim()}
+                >
+                  Kaydet
+                </button>
+              </div>
+            )}
           </div>
 
           {status && (
@@ -230,7 +331,7 @@ export default function MarkdownConverter() {
               <div className="mc-label">
                 <span>Gecmis</span>
                 <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px' }}>
-                  <button className="mc-history-clear-btn" onClick={downloadAllHistory}>Tumunu Indir</button>
+                  <button className="mc-history-clear-btn" onClick={downloadZip}>ZIP Indir</button>
                   <button className="mc-history-clear-btn" onClick={clearHistory}>Temizle</button>
                 </div>
               </div>
