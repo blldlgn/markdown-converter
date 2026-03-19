@@ -197,11 +197,15 @@ export default function MarkdownConverter() {
     const prompt = buildPrompt(urlList);
     setGeneratedPrompt(prompt);
     setCurrentTitle(urlList.length === 1 ? urlList[0] : `${urlList.length} sayfa`);
-    try {
+
+    // Try sendPrompt (works inside Claude.ai artifact)
+    if (typeof sendPrompt === 'function') {
       sendPrompt(prompt);
       setStatus({ type: 'ok', msg: `${urlList.length} URL Claude'a gönderildi ↑` });
-    } catch (err) {
-      setStatus({ type: 'err', msg: err.message });
+    } else {
+      // Fallback: copy to clipboard
+      copyText(prompt, () => {});
+      setStatus({ type: 'info', msg: 'Prompt kopyalandı — Claude chat'e yapıştırıp gönderin.' });
     }
   };
 
