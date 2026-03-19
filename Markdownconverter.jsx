@@ -174,21 +174,23 @@ const STYLES = `
     gap: 7px;
   }
   .mc-btn-primary {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    background: #111;
+    color: #fff;
+    border-color: #111;
   }
   .mc-btn-primary:hover {
     background: #333;
     border-color: #333;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
   }
   .mc-btn-outline {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--rule);
+    background: #fff;
+    color: #111;
+    border-color: #999;
   }
   .mc-btn-outline:hover {
-    border-color: var(--ink);
+    border-color: #111;
+    background: #f5f5f5;
   }
   .mc-btn-sm {
     font-size: 12px;
@@ -433,6 +435,8 @@ export default function MarkdownConverter() {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [copied, setCopied] = useState(false);
   const [mdCopied, setMdCopied] = useState(false);
+  const [pasteMode, setPasteMode] = useState(false);
+  const [pasteInput, setPasteInput] = useState('');
 
   useEffect(() => {
     try {
@@ -471,6 +475,11 @@ export default function MarkdownConverter() {
       return;
     }
 
+    if (urlList.length > 5) {
+      setStatus({ type: 'err', msg: `En fazla 5 URL gönderilebilir. Şu an ${urlList.length} URL var.` });
+      return;
+    }
+
     const prompt = buildPrompt(urlList);
     setGeneratedPrompt(prompt);
     setCurrentTitle(urlList.length === 1 ? urlList[0] : `${urlList.length} URLs`);
@@ -484,11 +493,17 @@ export default function MarkdownConverter() {
   };
 
   const handleMarkdownInput = () => {
-    const md = window.prompt('Claude\'ın markdown çıktısını yapıştırın:');
-    if (md && md.trim()) {
-      setMarkdown(md.trim());
-      saveToHistory(singleUrl || 'batch', currentTitle || 'Untitled', md.trim());
+    setPasteMode(p => !p);
+    setPasteInput('');
+  };
+
+  const handlePasteSubmit = () => {
+    if (pasteInput.trim()) {
+      setMarkdown(pasteInput.trim());
+      saveToHistory(singleUrl || 'batch', currentTitle || 'Untitled', pasteInput.trim());
       setStatus({ type: 'ok', msg: 'Markdown yüklendi.' });
+      setPasteMode(false);
+      setPasteInput('');
     }
   };
 
@@ -579,9 +594,29 @@ export default function MarkdownConverter() {
                 Markdown'a Çevir
               </button>
               <button className="mc-btn mc-btn-outline" onClick={handleMarkdownInput}>
-                Markdown Yapıştır
+                {pasteMode ? 'İptal' : 'Markdown Yapıştır'}
               </button>
             </div>
+
+            {pasteMode && (
+              <div style={{ marginTop: '1rem' }}>
+                <textarea
+                  className="mc-textarea"
+                  style={{ height: '140px', marginBottom: '0.75rem' }}
+                  placeholder="Claude'ın markdown çıktısını buraya yapıştırın..."
+                  value={pasteInput}
+                  onChange={e => setPasteInput(e.target.value)}
+                  autoFocus
+                />
+                <button
+                  className="mc-btn mc-btn-primary"
+                  onClick={handlePasteSubmit}
+                  disabled={!pasteInput.trim()}
+                >
+                  Kaydet
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Status */}
