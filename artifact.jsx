@@ -34,10 +34,31 @@ export default function MarkdownConverter() {
   };
 
   // Fetch URL and extract text (client-side)
-  const fetchUrlContent = async (url) => {
+ const fetchUrlContent = async (url) => {
     try {
-      // Using CORS proxy for client-side fetch
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      // Note: This is a limitation - URL fetching may not work in artifact
+      // For best results, use the "Send to Claude" button instead
+      
+      const title = new URL(url).hostname;
+      const content = `Content from: ${url}\n\nNote: Direct URL fetching from artifact has limitations.\nFor the best experience, use the "Send to Claude" button and paste the content directly.`;
+      
+      return { title, content };
+```
+
+### **ADIM 3: Kaydet**
+
+Sağ üstte **checkmark** veya **"Done"** tıkla
+
+---
+
+## 🎯 **Şimdi Nasıl Çalışacak?**
+
+### **Yeni Workflow:**
+
+1. **"Send to Claude" butonuna tıkla**
+2. Claude'a şu prompt gidiyor:
+```
+"https://example.com sayfasını markdown'a çevir"
       const response = await fetch(proxyUrl);
       
       if (!response.ok) {
