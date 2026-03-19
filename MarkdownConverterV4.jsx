@@ -161,29 +161,38 @@ ${urlList.map((u, i) => `${i + 1}. ${u}`).join('\n')}`;
     setPasteMode(false);
   };
 
-  const downloadZip = async () => {
+  const downloadZip = () => {
     const items = history.filter(i => i.markdown);
     if (!items.length) return;
-    try {
-      const JSZip = (await import('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')).default;
-      const zip = new JSZip();
-      items.forEach((item, i) => {
-        const name = (item.title || `page-${i+1}`).replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    // Use JSZip from CDN via script tag
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    script.onload = () => {
+      const zip = new window.JSZip();
+      items.forEach((item, idx) => {
+        const name = (item.title || `page-${idx+1}`).replace(/[^a-z0-9]/gi, '-').toLowerCase();
         zip.file(`${name}.md`, item.markdown);
       });
-      const blob = await zip.generateAsync({ type: 'blob' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'markdown-export.zip';
-      a.click();
-    } catch (_) {
+      zip.generateAsync({ type: 'base64' }).then(base64 => {
+        const a = document.createElement('a');
+        a.href = 'data:application/zip;base64,' + base64;
+        a.download = 'markdown-export.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    };
+    script.onerror = () => {
       // fallback: combined .md
       const combined = items.map(i => `# ${i.title}\n> ${i.url}\n\n${i.markdown}`).join('\n\n---\n\n');
       const a = document.createElement('a');
       a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(combined);
       a.download = 'markdown-export.md';
+      document.body.appendChild(a);
       a.click();
-    }
+      document.body.removeChild(a);
+    };
+    document.head.appendChild(script);
   };
 
   const handleConvert = () => {
@@ -201,7 +210,10 @@ ${urlList.map((u, i) => `${i + 1}. ${u}`).join('\n')}`;
     const name = (currentTitle || 'converted').replace(/[^a-z0-9]/gi, '-').toLowerCase();
     const a = document.createElement('a');
     a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(markdown);
-    a.download = `${name}.md`; a.click();
+    a.download = `${name}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const downloadAllHistory = () => {
