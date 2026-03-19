@@ -12,7 +12,7 @@ URL'yi yapıştır, Markdown al. Ücretsiz. API yok. Sadece Claude.ai aboneliği
 
 Aşağıdaki butona tıklayın — Claude.ai açılır, araç otomatik yüklenir:
 
-[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/markdown-converter/refs/heads/main/Markdownconverter.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
+[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/markdown-converter/refs/heads/main/MarkdownConverterV2.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
 
 Tıkladıktan sonra Claude mesaj kutusunda hazır gelir — sadece **Enter**'a basın.
 
@@ -34,35 +34,16 @@ Yanıt chat'te görünür
 
 ---
 
-## Manuel Kullanım
-
-Butonu kullanmak istemiyorsanız:
-
-1. [claude.ai](https://claude.ai) adresine gidin
-2. Yeni sohbet başlatın
-3. `Markdownconverter.jsx` içeriğini kopyalayın
-4. Claude'a şunu yazın:
-
-```
-Aşağıdaki React kodunu artifact olarak çalıştır:
-
-[kodu buraya yapıştırın]
-```
-
-5. Artifact açılınca URL girin → **"Markdown'a Çevir"** butonuna basın
-
----
-
 ## Özellikler
 
-- **Tek URL veya Batch mod** — birden fazla URL aynı anda
+- **Tek URL** — tek bir sayfa
+- **Manuel Liste** — birden fazla URL satır satır
+- **Sitemap modu** — `sitemap.xml` girin, URL'leri otomatik çeker, seçip toplu gönderin
 - **Otomatik gönderim** — `sendPrompt()` ile Claude'a direkt iletilir
-- **Prompt paneli** — gönderilen prompt'u görebilir, kopyalayabilirsiniz
-- **Markdown çıktı paneli** — istatistiklerle birlikte görüntüleyin
-- **Token / karakter / satır sayacı**
+- **Kopyala / İndir .md** — çıktıyı kaydedin
 - **Düzenleme modu** — Markdown'ı inline düzenleyin
-- **.md olarak indirin**
 - **Geçmiş** — son 20 dönüşüm tarayıcıda saklanır
+- **Tümünü İndir** — geçmişteki tüm sayfaları tek `.md` dosyasına
 
 ---
 
