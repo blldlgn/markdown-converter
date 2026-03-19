@@ -205,7 +205,7 @@ export default function MarkdownConverter() {
     } else {
       // Fallback: copy to clipboard
       copyText(prompt, () => {});
-      setStatus({ type: 'info', msg: 'Prompt kopyalandı — Claude chat'e yapıştırıp gönderin.' });
+      setStatus({ type: 'info', msg: 'Prompt kopyalandı — Claude chat\u2019e yapıştırıp gönderin.' });
     }
   };
 
