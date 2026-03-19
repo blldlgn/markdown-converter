@@ -12,7 +12,7 @@ URL'yi yapıştır, Markdown al. Ücretsiz. API yok. Sadece Claude.ai aboneliği
 
 Aşağıdaki butona tıklayın — Claude.ai açılır, araç otomatik yüklenir:
 
-[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/__markdown-converter__/main/MarkdownConverter.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
+[![Claude.ai'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/blldlgn/markdown-converter/refs/heads/main/Markdownconverter.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
 
 Tıkladıktan sonra Claude mesaj kutusunda hazır gelir — sadece **Enter**'a basın.
 
@@ -40,7 +40,7 @@ Butonu kullanmak istemiyorsanız:
 
 1. [claude.ai](https://claude.ai) adresine gidin
 2. Yeni sohbet başlatın
-3. `MarkdownConverter.jsx` içeriğini kopyalayın
+3. `Markdownconverter.jsx` içeriğini kopyalayın
 4. Claude'a şunu yazın:
 
 ```
