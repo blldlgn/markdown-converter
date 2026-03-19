@@ -475,11 +475,6 @@ export default function MarkdownConverter() {
       return;
     }
 
-    if (urlList.length > 5) {
-      setStatus({ type: 'err', msg: `En fazla 5 URL gönderilebilir. Şu an ${urlList.length} URL var.` });
-      return;
-    }
-
     const prompt = buildPrompt(urlList);
     setGeneratedPrompt(prompt);
     setCurrentTitle(urlList.length === 1 ? urlList[0] : `${urlList.length} URLs`);
@@ -583,7 +578,7 @@ export default function MarkdownConverter() {
             ) : (
               <textarea
                 className="mc-textarea"
-                placeholder={"https://example.com\nhttps://github.com/user/repo\nhttps://docs.site.com/page"}
+                placeholder={"https://example.com\nhttps://github.com/user/repo\nhttps://docs.site.com/page\n..."}
                 value={urls}
                 onChange={e => setUrls(e.target.value)}
               />
