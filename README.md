@@ -8,9 +8,21 @@ URL'yi yapıştır, Markdown al. Ücretsiz. API yok. Sadece Claude.ai aboneliği
 
 ---
 
+## ▶️ Tek Tıkla Başlat
+
+Aşağıdaki butona tıklayın — Claude.ai açılır, araç otomatik yüklenir:
+
+[![Claude'da Aç](https://img.shields.io/badge/Claude.ai'da%20A%C3%A7-black?style=for-the-badge&logo=anthropic)](https://claude.ai/new?q=https%3A//raw.githubusercontent.com/YOUR_USERNAME/markdown-converter/main/MarkdownConverter.jsx%20adresindeki%20React%20kodunu%20artifact%20olarak%20%C3%A7al%C4%B1%C5%9Ft%C4%B1r.)
+
+> **Not:** `YOUR_USERNAME` kısmını kendi GitHub kullanıcı adınızla değiştirin.
+
+Tıkladıktan sonra Claude mesaj kutusunda hazır gelir — sadece **Enter**'a basın.
+
+---
+
 ## Nasıl Çalışır?
 
-`sendPrompt()` — Claude.ai'ın artifact'lere özel bir fonksiyonu. API key gerektirmez, Claude aboneliğinizle çalışır.
+`sendPrompt()` — Claude.ai'ın artifact'lere özel fonksiyonu. API key gerektirmez.
 
 ```
 Siz URL girersiniz
@@ -24,37 +36,24 @@ Yanıt chat'te görünür
 
 ---
 
-## Kullanım
+## Manuel Kullanım
 
-### Adım 1 — Claude.ai'ı açın
+Butonu kullanmak istemiyorsanız:
 
-[claude.ai](https://claude.ai) adresine gidin. Ücretsiz veya Pro hesap çalışır.
-
-### Adım 2 — Yeni sohbet başlatın
-
-Yeni bir konuşma açın.
-
-### Adım 3 — Kodu artifact olarak çalıştırın
-
-Claude'a şunu yazın:
-
-```
-Aşağıdaki React kodunu artifact olarak çalıştır:
-```
-
-Ardından `MarkdownConverter.jsx` dosyasının içeriğini mesaja yapıştırın ve gönderin.
-
-### Adım 4 — Kullanın
-
-Artifact paneli açılır. URL girin, **"Markdown'a Çevir"** butonuna basın. Claude yukarıda Markdown çıktısını yazar.
+1. [claude.ai](https://claude.ai) adresine gidin
+2. Yeni sohbet başlatın
+3. `MarkdownConverter.jsx` içeriğini kopyalayın
+4. Claude'a yapıştırıp şunu yazın: **"Bu kodu artifact olarak çalıştır"**
+5. Artifact açılınca URL girin → **"Markdown'a Çevir"** butonuna basın
 
 ---
 
 ## Özellikler
 
 - **Tek URL veya Batch mod** — birden fazla URL aynı anda
+- **Otomatik gönderim** — `sendPrompt()` ile Claude'a direkt iletilir
 - **Prompt paneli** — gönderilen prompt'u görebilir, kopyalayabilirsiniz
-- **Markdown çıktı paneli** — Claude'un yanıtını yapıştırıp istatistikleri görün
+- **Markdown çıktı paneli** — istatistiklerle birlikte görüntüleyin
 - **Token / karakter / satır sayacı**
 - **Düzenleme modu** — Markdown'ı inline düzenleyin
 - **.md olarak indirin**
@@ -73,23 +72,13 @@ Artifact paneli açılır. URL girin, **"Markdown'a Çevir"** butonuna basın. C
 
 ---
 
-## Dosyalar
-
-```
-markdown-converter/
-├── MarkdownConverter.jsx   # Tek dosya, tüm kod burada
-└── README.md
-```
-
----
-
 ## Sık Sorulan Sorular
 
 **Bu neden ücretsiz?**
 `sendPrompt()` Claude.ai'ın artifact API'si. Claude aboneliğinizin içinde, ek ücret yok.
 
 **GitHub Pages veya Netlify'da çalışır mı?**
-Hayır. `sendPrompt()` sadece Claude.ai artifact ortamında tanımlı. Bağımsız web uygulaması yapmak istiyorsanız Anthropic API'si gerekir.
+Hayır. `sendPrompt()` sadece Claude.ai artifact ortamında çalışır.
 
 **Claude ücretsiz planında çalışır mı?**
 Evet, ancak ücretsiz planda mesaj limiti var. Pro/Team planlarda limit daha yüksek.
