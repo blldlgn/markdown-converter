@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --bg: #f7f5f0; --paper: #fdfcfa; --ink: #111111; --ink2: #444444; --ink3: #888888; --rule: #dddad4; --rule2: #e8e5df; --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif; }
+  :root { --bg: #f7f5f0; --paper: #fdfcfa; --ink: #111; --ink2: #444; --ink3: #888; --rule: #dddad4; --rule2: #e8e5df; --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif; }
   .mc-root { background: var(--bg); min-height: 100vh; font-family: var(--sans); color: var(--ink); padding: 3rem 2rem; }
   .mc-inner { max-width: 720px; margin: 0 auto; }
   .mc-header { margin-bottom: 3.5rem; padding-bottom: 2rem; border-bottom: 2px solid var(--ink); display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
@@ -14,7 +14,7 @@ const STYLES = `
   .mc-section { margin-bottom: 2.5rem; }
   .mc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem; }
   .mc-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-  .mc-tabs { display: flex; gap: 0; margin-bottom: 1rem; border: 1.5px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  .mc-tabs { display: flex; margin-bottom: 1rem; border: 1.5px solid var(--rule); border-radius: 3px; overflow: hidden; }
   .mc-tab { flex: 1; padding: 9px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--paper); color: var(--ink3); border: none; cursor: pointer; transition: all 0.15s; border-right: 1px solid var(--rule); }
   .mc-tab:last-child { border-right: none; }
   .mc-tab.active { background: var(--ink); color: #fff; }
@@ -23,39 +23,25 @@ const STYLES = `
   .mc-input::placeholder, .mc-textarea::placeholder { color: var(--ink3); }
   .mc-input:focus, .mc-textarea:focus { border-color: var(--ink); }
   .mc-textarea { height: 108px; line-height: 1.8; }
-  .mc-sitemap-row { display: flex; gap: 8px; }
-  .mc-sitemap-row .mc-input { flex: 1; }
-  .mc-url-list { background: var(--paper); border: 1.5px solid var(--rule); border-radius: 2px; margin-top: 1rem; max-height: 260px; overflow-y: auto; }
-  .mc-url-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--rule2); cursor: pointer; transition: background 0.1s; }
-  .mc-url-item:last-child { border-bottom: none; }
-  .mc-url-item:hover { background: var(--bg); }
-  .mc-url-check { width: 14px; height: 14px; border: 1.5px solid var(--ink3); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.1s; }
-  .mc-url-check.checked { background: var(--ink); border-color: var(--ink); }
-  .mc-url-check.checked::after { content: '✓'; color: #fff; font-size: 9px; }
-  .mc-url-text { font-family: var(--mono); font-size: 11px; color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
-  .mc-url-list-footer { padding: 8px 14px; background: var(--bg); border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
-  .mc-url-count { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
   .mc-btn-row { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
-  .mc-btn { font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.01em; padding: 11px 20px; border-radius: 2px; cursor: pointer; transition: all 0.15s; border: 1.5px solid transparent; display: flex; align-items: center; gap: 7px; }
+  .mc-btn { font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 11px 20px; border-radius: 2px; cursor: pointer; transition: all 0.15s; border: 1.5px solid transparent; display: flex; align-items: center; gap: 7px; }
   .mc-btn-primary { background: #111; color: #fff; border-color: #111; }
-  .mc-btn-primary:hover:not(:disabled) { background: #333; border-color: #333; box-shadow: 0 3px 12px rgba(0,0,0,0.15); }
-  .mc-btn-primary:disabled { background: #ccc; border-color: #ccc; cursor: not-allowed; }
+  .mc-btn-primary:hover { background: #333; border-color: #333; box-shadow: 0 3px 12px rgba(0,0,0,0.15); }
   .mc-btn-outline { background: #fff; color: #111; border-color: #999; }
   .mc-btn-outline:hover { border-color: #111; background: #f5f5f5; }
   .mc-btn-sm { font-size: 12px; padding: 7px 14px; }
   .mc-btn-danger { background: transparent; color: #c0392b; border-color: #e8bcb9; }
   .mc-btn-danger:hover { border-color: #c0392b; }
-  .mc-status { padding: 11px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; margin-bottom: 2rem; border-radius: 2px; display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
-  .mc-status.ok  { background: #f0faf0; border: 1px solid #b8e0b8; color: #2d6a2d; }
+  .mc-status { padding: 11px 14px; font-family: var(--mono); font-size: 11px; margin-bottom: 2rem; border-radius: 2px; display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
+  .mc-status.ok { background: #f0faf0; border: 1px solid #b8e0b8; color: #2d6a2d; }
   .mc-status.err { background: #fdf0f0; border: 1px solid #e0b8b8; color: #7a2d2d; }
-  .mc-status.info { background: #f0f4fa; border: 1px solid #b8cce0; color: #1a3a6a; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .mc-panel { background: var(--paper); border: 1.5px solid var(--rule); border-radius: 2px; margin-bottom: 2rem; overflow: hidden; animation: fadeUp 0.25s ease; }
-  .mc-panel-head { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--rule2); display: flex; align-items: center; justify-content: space-between; background: var(--bg); }
+  .mc-panel-head { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--rule2); display: flex; align-items: center; background: var(--bg); }
   .mc-panel-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink3); }
   .mc-panel-body { padding: 1.25rem; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--ink2); max-height: 200px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
   .mc-panel-foot { padding: 0.75rem 1.25rem; border-top: 1px solid var(--rule2); display: flex; align-items: center; gap: 12px; background: var(--bg); flex-wrap: wrap; }
-  .mc-panel-hint { font-family: var(--mono); font-size: 10px; color: var(--ink3); letter-spacing: 0.03em; }
+  .mc-panel-hint { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
   .mc-output-head { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--rule2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; background: var(--bg); }
   .mc-stats { display: flex; gap: 16px; }
   .mc-stat { text-align: right; }
@@ -85,9 +71,6 @@ export default function MarkdownConverter() {
   const [mode, setMode] = useState('single');
   const [singleUrl, setSingleUrl] = useState('');
   const [manualUrls, setManualUrls] = useState('');
-  const [sitemapUrl, setSitemapUrl] = useState('');
-  const [sitemapLoading, setSitemapLoading] = useState(false);
-  const [sitemapUrls, setSitemapUrls] = useState([]);
   const [history, setHistory] = useState([]);
   const [markdown, setMarkdown] = useState('');
   const [currentTitle, setCurrentTitle] = useState('');
@@ -111,29 +94,6 @@ export default function MarkdownConverter() {
     try { localStorage.setItem('markdown-history', JSON.stringify(updated)); } catch (_) {}
   };
 
-  const fetchSitemap = async () => {
-    if (!sitemapUrl.trim()) return;
-    setSitemapLoading(true);
-    setStatus(null);
-    setSitemapUrls([]);
-    try {
-      const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(sitemapUrl.trim())}`;
-      const res = await fetch(proxy);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const xml = await res.text();
-      const matches = [...xml.matchAll(/<loc>(.*?)<\/loc>/gi)].map(m => m[1].trim());
-      if (!matches.length) throw new Error('Sitemapte URL bulunamadi');
-      setSitemapUrls(matches.map(url => ({ url, selected: true })));
-      setStatus({ type: 'ok', msg: `${matches.length} URL bulundu - gondermek istediklerinizi secin.` });
-    } catch (err) {
-      setStatus({ type: 'err', msg: `Sitemap cekilemedi: ${err.message}` });
-    }
-    setSitemapLoading(false);
-  };
-
-  const toggleUrl = (i) => setSitemapUrls(prev => prev.map((item, idx) => idx === i ? { ...item, selected: !item.selected } : item));
-  const toggleAll = () => { const all = sitemapUrls.every(u => u.selected); setSitemapUrls(prev => prev.map(item => ({ ...item, selected: !all }))); };
-
   const buildPrompt = (urlList) => {
     if (urlList.length === 1) return `Please fetch the content at the following URL and convert it to clean, well-structured Markdown. Preserve headings, lists, code blocks. Return ONLY the Markdown.\n\nURL: ${urlList[0]}`;
     return `Please fetch and convert each of these URLs to clean Markdown. For each URL, use the URL as a heading, then the content below. Separate each with ---.\n\nURLs:\n${urlList.map((u, i) => `${i + 1}. ${u}`).join('\n')}`;
@@ -141,9 +101,7 @@ export default function MarkdownConverter() {
 
   const getUrlList = () => {
     if (mode === 'single') return [singleUrl.trim()].filter(Boolean);
-    if (mode === 'manual') return manualUrls.split('\n').map(u => u.trim()).filter(Boolean);
-    if (mode === 'sitemap') return sitemapUrls.filter(u => u.selected).map(u => u.url);
-    return [];
+    return manualUrls.split('\n').map(u => u.trim()).filter(Boolean);
   };
 
   const copyText = (text, setCopiedFn) => {
@@ -152,23 +110,20 @@ export default function MarkdownConverter() {
       ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       setCopiedFn(true); setTimeout(() => setCopiedFn(false), 2000);
-    } catch (_) { navigator.clipboard.writeText(text).then(() => { setCopiedFn(true); setTimeout(() => setCopiedFn(false), 2000); }).catch(() => {}); }
+    } catch (_) {
+      navigator.clipboard.writeText(text).then(() => { setCopiedFn(true); setTimeout(() => setCopiedFn(false), 2000); }).catch(() => {});
+    }
   };
 
   const handleConvert = () => {
     setStatus(null);
     const urlList = getUrlList();
-    if (!urlList.length) { setStatus({ type: 'err', msg: 'En az bir URL gerekli.' }); return; }
+    if (!urlList.length) { setStatus({ type: 'err', msg: 'En az bir URL girin.' }); return; }
     const prompt = buildPrompt(urlList);
     setGeneratedPrompt(prompt);
     setCurrentTitle(urlList.length === 1 ? urlList[0] : `${urlList.length} sayfa`);
-    try {
-      sendPrompt(prompt);
-      setStatus({ type: 'ok', msg: `${urlList.length} URL Claude'a gonderildi` });
-    } catch (_) {
-      copyText(prompt, () => {});
-      setStatus({ type: 'info', msg: 'Prompt kopyalandi - Claude chat\'e yapistirip gonderin.' });
-    }
+    copyText(prompt, () => {});
+    setStatus({ type: 'ok', msg: 'Prompt kopyalandi — Claude\'a yapistirip gonderin, markdown ciktisini asagiya yapistirin.' });
   };
 
   const downloadMarkdown = () => {
@@ -180,14 +135,13 @@ export default function MarkdownConverter() {
 
   const downloadAllHistory = () => {
     if (!history.length) return;
-    const combined = history.filter(item => item.markdown).map(item => `# ${item.title}\n> ${item.url}\n\n${item.markdown}`).join('\n\n---\n\n');
+    const combined = history.filter(i => i.markdown).map(i => `# ${i.title}\n> ${i.url}\n\n${i.markdown}`).join('\n\n---\n\n');
     const a = document.createElement('a');
     a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(combined);
     a.download = 'tum-sayfalar.md'; a.click();
   };
 
   const clearHistory = () => { setHistory([]); try { localStorage.removeItem('markdown-history'); } catch (_) {} };
-  const selectedCount = sitemapUrls.filter(u => u.selected).length;
   const mdStats = markdown ? { tokens: Math.ceil(markdown.length / 4).toLocaleString(), chars: markdown.length.toLocaleString(), lines: markdown.split('\n').length.toLocaleString() } : null;
 
   return (
@@ -195,6 +149,7 @@ export default function MarkdownConverter() {
       <style>{STYLES}</style>
       <div className="mc-root">
         <div className="mc-inner">
+
           <div className="mc-header">
             <div>
               <div className="mc-eyebrow">Web to Markdown</div>
@@ -208,61 +163,36 @@ export default function MarkdownConverter() {
             <div className="mc-tabs">
               <button className={`mc-tab ${mode === 'single' ? 'active' : ''}`} onClick={() => setMode('single')}>Tek URL</button>
               <button className={`mc-tab ${mode === 'manual' ? 'active' : ''}`} onClick={() => setMode('manual')}>Manuel Liste</button>
-              <button className={`mc-tab ${mode === 'sitemap' ? 'active' : ''}`} onClick={() => setMode('sitemap')}>Sitemap</button>
             </div>
 
-            {mode === 'single' && (
-              <input className="mc-input" type="url" placeholder="https://example.com/article" value={singleUrl} onChange={e => setSingleUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleConvert()} />
-            )}
-            {mode === 'manual' && (
-              <textarea className="mc-textarea" placeholder={"https://example.com/page-1\nhttps://example.com/page-2"} value={manualUrls} onChange={e => setManualUrls(e.target.value)} />
-            )}
-            {mode === 'sitemap' && (
-              <div>
-                <div className="mc-sitemap-row">
-                  <input className="mc-input" type="url" placeholder="https://example.com/sitemap.xml" value={sitemapUrl} onChange={e => setSitemapUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchSitemap()} />
-                  <button className="mc-btn mc-btn-outline" onClick={fetchSitemap} disabled={sitemapLoading} style={{ whiteSpace: 'nowrap' }}>
-                    {sitemapLoading ? 'Yukleniyor...' : 'Cek'}
-                  </button>
-                </div>
-                {sitemapUrls.length > 0 && (
-                  <div className="mc-url-list">
-                    {sitemapUrls.map((item, i) => (
-                      <div key={i} className="mc-url-item" onClick={() => toggleUrl(i)}>
-                        <div className={`mc-url-check ${item.selected ? 'checked' : ''}`} />
-                        <span className="mc-url-text">{item.url}</span>
-                      </div>
-                    ))}
-                    <div className="mc-url-list-footer">
-                      <span className="mc-url-count">{selectedCount} / {sitemapUrls.length} secili</span>
-                      <button className="mc-history-clear-btn" onClick={toggleAll}>{sitemapUrls.every(u => u.selected) ? 'Tumunu Kaldir' : 'Tumunu Sec'}</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+            {mode === 'single'
+              ? <input className="mc-input" type="url" placeholder="https://example.com/article" value={singleUrl} onChange={e => setSingleUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleConvert()} />
+              : <textarea className="mc-textarea" placeholder={"https://example.com/page-1\nhttps://example.com/page-2\nhttps://example.com/page-3"} value={manualUrls} onChange={e => setManualUrls(e.target.value)} />
+            }
 
             <div className="mc-btn-row">
-              <button className="mc-btn mc-btn-primary" onClick={handleConvert} disabled={mode === 'sitemap' && selectedCount === 0}>
-                Markdown'a Cevir{mode === 'sitemap' && selectedCount > 0 ? ` (${selectedCount})` : ''}
+              <button className="mc-btn mc-btn-primary" onClick={handleConvert}>
+                Prompt Olustur ve Kopyala
               </button>
             </div>
           </div>
 
           {status && (
             <div className={`mc-status ${status.type}`}>
-              <span>{status.type === 'ok' ? '✓' : status.type === 'info' ? 'i' : '✕'}</span>
+              <span>{status.type === 'ok' ? '✓' : '✕'}</span>
               <span>{status.msg}</span>
             </div>
           )}
 
           {generatedPrompt && (
             <div className="mc-panel">
-              <div className="mc-panel-head"><span className="mc-panel-label">Olusturulan Prompt</span></div>
+              <div className="mc-panel-head"><span className="mc-panel-label">Prompt</span></div>
               <div className="mc-panel-body">{generatedPrompt}</div>
               <div className="mc-panel-foot">
-                <button className="mc-btn mc-btn-outline mc-btn-sm" onClick={() => copyText(generatedPrompt, setCopied)}>{copied ? '✓ Kopyalandi' : 'Kopyala'}</button>
-                <span className="mc-panel-hint">Otomatik gonderildi veya kopyalayip Claude'a yapistirin</span>
+                <button className="mc-btn mc-btn-outline mc-btn-sm" onClick={() => copyText(generatedPrompt, setCopied)}>
+                  {copied ? '✓ Kopyalandi' : 'Tekrar Kopyala'}
+                </button>
+                <span className="mc-panel-hint">Claude'a yapistirin → ciktisini asagiya yapistirin</span>
               </div>
             </div>
           )}
@@ -287,7 +217,10 @@ export default function MarkdownConverter() {
                   <button className="mc-btn mc-btn-outline mc-btn-sm" onClick={() => setEditMode(e => !e)}>{editMode ? 'Goruntule' : 'Duzenle'}</button>
                   <button className="mc-btn mc-btn-danger mc-btn-sm" style={{ marginLeft: 'auto' }} onClick={() => { setMarkdown(''); setEditMode(false); }}>Temizle</button>
                 </div>
-                {editMode ? <textarea className="mc-output-edit" value={markdown} onChange={e => setMarkdown(e.target.value)} /> : <div className="mc-output-body">{markdown}</div>}
+                {editMode
+                  ? <textarea className="mc-output-edit" value={markdown} onChange={e => setMarkdown(e.target.value)} />
+                  : <div className="mc-output-body">{markdown}</div>
+                }
               </div>
             </div>
           )}
@@ -315,8 +248,9 @@ export default function MarkdownConverter() {
 
           <div className="mc-footer">
             <div className="mc-footer-text">Claude subscription kullanir · API ucreti yok · Made by <strong>Bilal Dalgün</strong></div>
-            <span className="mc-footer-tag">v2</span>
+            <span className="mc-footer-tag">v3</span>
           </div>
+
         </div>
       </div>
     </>
