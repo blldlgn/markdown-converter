@@ -1,0 +1,64 @@
+{
+  "name": "markdown-converter",
+  "version": "1.0.0",
+  "description": "URL to Markdown converter with Claude API",
+  "main": "converter.js",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "cheerio": "^1.0.0-rc.12",
+    "node-fetch": "^3.3.0",
+    "dotenv": "^16.0.0"
+  }
+}
+```
+
+### 3.4 - Commit
+```
+Commit message: Add package.json - dependencies
+```
+
+Tıkla: **"Commit new file"**
+
+✅ **package.json eklendi!**
+
+---
+
+## **ADIM 4: .gitignore Ekle**
+
+### 4.1 - Yeni Dosya
+
+**"Add file"** → **"Create new file"** tıkla
+
+### 4.2 - Dosya Adı
+```
+.gitignore
+```
+
+### 4.3 - İçerik
+```
+.env
+node_modules/
+*.md
+conversions.json
+```
+
+### 4.4 - Commit
+```
+Commit message: Add .gitignore
+```
+
+Tıkla: **"Commit new file"**
+
+✅ **.gitignore eklendi!**
+
+---
+
+## **ADIM 5: README.md Ekle**
+
+### 5.1 - Yeni Dosya
+
+**"Add file"** → **"Create new file"** tıkla
+
+### 5.2 - Dosya Adı
+```
+README.md
